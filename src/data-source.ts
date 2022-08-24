@@ -6,7 +6,7 @@ import { Applicant, Position } from './entity';
 export const AppDataSource = new DataSource({
     type: 'postgres',
     host: config.DB_HOST,
-    port: Number(config.PORT),
+    port: Number(config.DB_PORT),
     username: config.DB_USERNAME,
     password: config.DB_PASSWORD,
     database: config.DB_DATABASE,
@@ -14,5 +14,6 @@ export const AppDataSource = new DataSource({
     logging: true,
     entities: [Applicant, Position],
     subscribers: [],
-    migrations: [],
+    migrations: ['src/migrations/**/*{.ts,.js}'],
+    migrationsRun: true
 });
