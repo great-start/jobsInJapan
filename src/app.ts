@@ -1,6 +1,7 @@
 import 'reflect-metadata';
 import express from 'express';
 import dotenv from 'dotenv';
+
 import { AppDataSource } from './data-source';
 
 dotenv.config();
@@ -14,8 +15,8 @@ const { PROTOCOL, HOST, PORT } = process.env;
 app.listen(PORT, async () => {
     await AppDataSource.initialize()
         .then(() => {
-            console.log('Database has connected!');
+            console.log('Data Source has been initialized!');
             console.log(`Server started at ${PROTOCOL}://${HOST}:${PORT}`);
         })
-        .catch((error) => console.log('Database error!!!', error));
+        .catch((error) => console.log('Error during Data Source initialization!!!', error));
 });
