@@ -1,30 +1,22 @@
-import {Column, Entity, PrimaryGeneratedColumn} from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-export enum Categories {
-    nodejs = 'nodejs',
-    angular = 'angular',
-    javascript = 'javascript',
-    react = 'react',
-}
+import {Category} from "./Category.enum";
+import {Level} from "./Level.enum";
 
 @Entity()
 export class Applicant {
-    @PrimaryGeneratedColumn()
-    id: number
+    @PrimaryGeneratedColumn('uuid')
+    id: number;
 
-    @Column()
+    @Column({ type: 'varchar', length: 50, unique: true })
     email: string;
 
-    @Column({
-        type: 'enum',
-        enum: Categories,
-        array: true,
-    })
-    categories: Categories[];
+    @Column({ type: 'enum', enum: Category, array: true })
+    categories: Category[];
 
-    @Column()
+    @Column({ type: 'boolean', default: false })
     japaneseKnowledge: boolean;
 
-    @Column()
-    level: string;
+    @Column({ type: 'enum', enum: Level })
+    level: Level;
 }

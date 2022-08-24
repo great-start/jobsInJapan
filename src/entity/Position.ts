@@ -1,31 +1,25 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-export enum Level {
-    junior = 'junior',
-    middle = 'middle',
-    senior = 'senior',
-}
+import {Level} from "./Level.enum";
+import {Category} from "./Category.enum";
 
 @Entity()
 export class Position {
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn('increment')
     id: number;
 
-    @Column()
-    category: string;
+    @Column({ type: 'enum', enum: Category })
+    category: Category;
 
-    @Column({
-        type: "enum",
-        enum: Level,
-    })
+    @Column({ type: 'enum', enum: Level })
     level: Level;
 
-    @Column()
+    @Column({ type: 'varchar', length: 100 })
     company: string;
 
-    @Column()
+    @Column({ type: 'varchar', length: 500, default: null })
     description?: string;
 
-    @Column()
+    @Column({ type: 'boolean', default: false })
     japaneseRequired: boolean;
 }
