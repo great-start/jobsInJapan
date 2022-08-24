@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { AppDataSource } from '../data-source';
-import {Category, Position} from '../entity';
+import { Category, Level, Position } from '../entity';
+import {Like} from 'typeorm';
 
 class PositionsController {
     public async createPosition(req: Request, res: Response, next: NextFunction) {
@@ -19,13 +20,13 @@ class PositionsController {
 
     public async findPositions(req: Request, res: Response, next: NextFunction) {
         try {
-            const { category } = req.query;
+            const { category, level, tag } = req.query;
 
-            const positions = await AppDataSource.getRepository(Position).find({
-                    where: {
-                        category: category as Category,
-                    },
-                });
+            const positions = await AppDataSource.getRepository(Position).findBy({
+                    category: category as Category || undefined,
+                    level: level as Level || undefined,
+                    description: tag ? Like(`%${tag}%`) : undefined,
+            });
 
             res.status(201).json(positions);
         } catch (e) {
