@@ -36,13 +36,13 @@ class ApplicantsController {
             const { id } = req.params;
 
             await AppDataSource.getRepository(Applicant)
-                .findOneBy({ id: Number(id) })
+                .findOneOrFail({ where: { id: Number(id) } })
                 .catch(() => {
                     next(
                         new ErrorHandler(
                             HttpStatus.BAD_REQUEST,
                             400,
-                            'Position with id - ${id} does not exist'
+                            `Applicant with id ${id} does not exist`
                         )
                     );
                     return;

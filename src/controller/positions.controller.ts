@@ -1,15 +1,16 @@
 import { NextFunction, Request, Response } from 'express';
-import { Like } from 'typeorm';
+import { ArrayContains, Like } from "typeorm";
 
-import { Category, Level, Position } from '../entity';
+import { Applicant, Category, Level, Position } from "../entity";
 import { ErrorHandler } from '../error';
 import { AppDataSource } from '../data-source';
 import { HttpStatus } from '../constants';
+import { emailService } from "../services/email.service";
 
 class PositionsController {
     public async createOne(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            const { category, level } = req.body as Position;
+            const { category, level, japaneseRequired } = req.body as Position;
 
             if (
                 (category && !Object.values(Category).includes(category as Category)) ||
@@ -26,6 +27,14 @@ class PositionsController {
             }
 
             const { id } = await AppDataSource.getRepository(Position).save(req.body);
+
+            const applicants = await AppDataSource.getRepository(Applicant).findBy({
+                categories: ArrayContains([category]),
+                level,
+                japaneseKnowledge: japaneseRequired
+            });
+
+            await emailService.sendEmail(applicants).catch((err) => console.log(err));
 
             res.status(201).json({ id });
         } catch (e) {
@@ -105,20 +114,18 @@ class PositionsController {
         try {
             const { id } = req.params;
 
-            const existedPosition = await AppDataSource.getRepository(Position).findOneBy({
-                id: Number(id),
-            });
-
-            if (!existedPosition) {
-                next(
-                    new ErrorHandler(
-                        `Position with id - ${id} does not exist`,
-                        400,
-                        HttpStatus.BAD_REQUEST
-                    )
-                );
-                return;
-            }
+            await AppDataSource.getRepository(Position)
+                .findOneOrFail({ where: { id: Number(id) } })
+                .catch(() => {
+                    next(
+                        new ErrorHandler(
+                            HttpStatus.BAD_REQUEST,
+                            400,
+                            `Position with id ${id} does not exist`
+                        )
+                    );
+                    return;
+                });
 
             await AppDataSource.getRepository(Position).delete({ id: Number(id) });
 
