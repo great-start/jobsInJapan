@@ -120,7 +120,7 @@ class PositionsController {
                 return;
             }
 
-            await AppDataSource.getRepository(Position).delete(id);
+            await AppDataSource.getRepository(Position).delete({ id: Number(id) });
 
             res.status(204).json();
         } catch (e) {

@@ -34,7 +34,7 @@ class ApplicantsController {
         try {
             const { id } = req.params;
 
-            await AppDataSource.getRepository(Applicant).delete(id);
+            await AppDataSource.getRepository(Applicant).delete({ id: Number(id) });
 
             res.status(204).json();
         } catch (e) {
