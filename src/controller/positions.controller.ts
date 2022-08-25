@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from 'express';
-import { AppDataSource } from '../data-source';
 import { Category, Level, Position } from '../entity';
 import { Like } from 'typeorm';
 import { ErrorHandler } from '../error/errorHandler';
 import { HttpStatus } from '../constants';
+import { AppDataSource } from '../data-source';
 
 class PositionsController {
     public async createOne(req: Request, res: Response, next: NextFunction): Promise<void> {
