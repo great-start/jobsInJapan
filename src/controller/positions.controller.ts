@@ -64,10 +64,10 @@ class PositionsController {
 
     public async findOneById(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            const { position_id } = req.params;
+            const { id } = req.params;
 
             const position = await AppDataSource.getRepository(Position).findOne({
-                where: { id: Number(position_id) },
+                where: { id: Number(id) },
             });
 
             if (!position) {
@@ -76,6 +76,24 @@ class PositionsController {
             }
 
             res.status(200).json(position);
+        } catch (e) {
+            next(new ErrorHandler());
+        }
+    }
+
+    public async updateOne(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const { id } = req.params;
+            const body = req.body;
+
+            await AppDataSource.getRepository(Position).update(
+                {
+                    id: Number(id),
+                },
+                body
+            );
+
+            res.status(200).json();
         } catch (e) {
             next(new ErrorHandler());
         }
