@@ -4,10 +4,6 @@ import { Applicant } from "../entity";
 import { config } from "../config";
 
 const emailTransporter = createTransport({
-  from: 'From NodeService job_in_Japan',
-  // host: 'smtp.gmail.com',
-  // port: 465,
-  // secure: true,
   service: 'Gmail',
   auth: {
     // type: 'custom',
@@ -22,8 +18,6 @@ class EmailService {
   async sendEmail(applicants: Applicant[]) {
     // const { subject, html } = emailInfo[action];
 
-    console.log(applicants);
-
     let userEmails = [] as string[];
 
     applicants.forEach(item => {
@@ -31,8 +25,12 @@ class EmailService {
     })
 
     await emailTransporter.sendMail({
+      from: 'From NodeService job_in_Japan',
+      sender: 'From NodeService job_in_Japan',
       to: userEmails,
-      subject: 'New job',
+      subject: 'New job position matching your application',
+      html: '<html><head>From NodeService job_in_Japan</head></html>',
+
     });
   }
 }
