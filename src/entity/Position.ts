@@ -17,7 +17,7 @@ export class Position {
     @Column({ type: 'varchar', length: 100 })
     company: string;
 
-    @Column({ type: 'varchar', length: 1000, default: '' })
+    @Column({ type: 'varchar', length: 1000, default: null })
     description?: string;
 
     @Column({ type: 'boolean', default: false })

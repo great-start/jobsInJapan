@@ -5,7 +5,7 @@ import {Level} from "./Level.enum";
 
 @Entity()
 export class Applicant {
-    @PrimaryGeneratedColumn('uuid')
+    @PrimaryGeneratedColumn('increment')
     id: number;
 
     @Column({ type: 'varchar', length: 50, unique: true })

@@ -1,9 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
-import { Category, Level, Position } from '../entity';
 import { Like } from 'typeorm';
-import { ErrorHandler } from '../error/errorHandler';
-import { HttpStatus } from '../constants';
+
+import { Category, Level, Position } from '../entity';
+import { ErrorHandler } from '../error';
 import { AppDataSource } from '../data-source';
+import { HttpStatus } from '../constants';
 
 class PositionsController {
     public async createOne(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -66,12 +67,18 @@ class PositionsController {
         try {
             const { id } = req.params;
 
-            const position = await AppDataSource.getRepository(Position).findOne({
-                where: { id: Number(id) },
+            const position = await AppDataSource.getRepository(Position).findOneBy({
+                id: Number(id),
             });
 
             if (!position) {
-                next(new ErrorHandler(`Position with id - ${id} does not exist`, 400, HttpStatus.BAD_REQUEST));
+                next(
+                    new ErrorHandler(
+                        `Position with id - ${id} does not exist`,
+                        400,
+                        HttpStatus.BAD_REQUEST
+                    )
+                );
                 return;
             }
 
@@ -86,12 +93,7 @@ class PositionsController {
             const { id } = req.params;
             const body = req.body;
 
-            await AppDataSource.getRepository(Position).update(
-                {
-                    id: Number(id),
-                },
-                body
-            );
+            await AppDataSource.getRepository(Position).update({ id: Number(id) }, body);
 
             res.status(200).json();
         } catch (e) {
@@ -103,16 +105,24 @@ class PositionsController {
         try {
             const { id } = req.params;
 
-            const existedPosition = await AppDataSource.getRepository(Position).findOneBy({ id: Number(id) });
+            const existedPosition = await AppDataSource.getRepository(Position).findOneBy({
+                id: Number(id),
+            });
 
             if (!existedPosition) {
-                next(new ErrorHandler(`Position with id - ${id} does not exist`, 400, HttpStatus.BAD_REQUEST));
+                next(
+                    new ErrorHandler(
+                        `Position with id - ${id} does not exist`,
+                        400,
+                        HttpStatus.BAD_REQUEST
+                    )
+                );
                 return;
             }
 
             await AppDataSource.getRepository(Position).delete(id);
 
-            res.status(200).json();
+            res.status(204).json();
         } catch (e) {
             next(new ErrorHandler());
         }
