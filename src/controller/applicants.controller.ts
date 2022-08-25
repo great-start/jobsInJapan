@@ -3,6 +3,7 @@ import { NextFunction, Request, Response } from 'express';
 import { AppDataSource } from '../data-source';
 import { Applicant } from '../entity';
 import { ErrorHandler } from '../error';
+import { HttpStatus } from '../constants';
 
 class ApplicantsController {
     public async createOne(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -33,6 +34,19 @@ class ApplicantsController {
     public async deleteOne(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const { id } = req.params;
+
+            await AppDataSource.getRepository(Applicant)
+                .findOneBy({ id: Number(id) })
+                .catch(() => {
+                    next(
+                        new ErrorHandler(
+                            HttpStatus.BAD_REQUEST,
+                            400,
+                            'Position with id - ${id} does not exist'
+                        )
+                    );
+                    return;
+                });
 
             await AppDataSource.getRepository(Applicant).delete({ id: Number(id) });
 
