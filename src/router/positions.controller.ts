@@ -8,6 +8,6 @@ router.get('/', positionsController.findAllOrByQuery);
 router.get('/:id', positionsController.findOneById);
 router.post('/', positionsController.createOne);
 router.patch('/:id', positionsController.updateOne);
-router.delete('/:id', positionsController.delete);
+router.delete('/:id', positionsController.deleteOne);
 
 export const positionsRouter = router;

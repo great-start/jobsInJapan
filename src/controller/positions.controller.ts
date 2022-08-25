@@ -71,7 +71,7 @@ class PositionsController {
             });
 
             if (!position) {
-                next(new ErrorHandler('This position does not exist', 400, HttpStatus.BAD_REQUEST));
+                next(new ErrorHandler(`Position with id - ${id} does not exist`, 400, HttpStatus.BAD_REQUEST));
                 return;
             }
 
@@ -92,6 +92,25 @@ class PositionsController {
                 },
                 body
             );
+
+            res.status(200).json();
+        } catch (e) {
+            next(new ErrorHandler());
+        }
+    }
+
+    public async deleteOne(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const { id } = req.params;
+
+            const existedPosition = await AppDataSource.getRepository(Position).findOneBy({ id: Number(id) });
+
+            if (!existedPosition) {
+                next(new ErrorHandler(`Position with id - ${id} does not exist`, 400, HttpStatus.BAD_REQUEST));
+                return;
+            }
+
+            await AppDataSource.getRepository(Position).delete(id);
 
             res.status(200).json();
         } catch (e) {
