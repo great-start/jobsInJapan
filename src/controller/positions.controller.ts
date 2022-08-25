@@ -13,7 +13,7 @@ class PositionsController {
 
             res.status(201).json({ id });
         } catch (e) {
-            next(e);
+            next(new ErrorHandler());
         }
     }
 
