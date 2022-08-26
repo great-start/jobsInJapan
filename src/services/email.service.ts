@@ -25,7 +25,7 @@ class EmailService {
             userEmails.push(item.email);
         });
 
-        const emailTemplatePath = path.join(process.cwd(), 'src/email/email.pug');
+        const emailTemplatePath = path.join(process.cwd(), config.EMAIL_TEMPLATE_PATH);
 
         const renderedEmail = await new Email().render(emailTemplatePath, {
             header,

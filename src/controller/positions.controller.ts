@@ -148,7 +148,7 @@ class PositionsController {
 
             res.status(204).end();
         } catch (e) {
-            next(new ErrorHandler());
+            next(e);
         }
     };
 }

@@ -17,4 +17,7 @@ export const config = {
     // email-sender config
     NO_REPLY_EMAIL: process.env.NO_REPLY_EMAIL,
     GOOGLE_GENERATED_APP_PASSWORD: process.env.GOOGLE_GENERATED_APP_PASSWORD,
+
+    // path to email template
+    EMAIL_TEMPLATE_PATH: 'src/email/email.pug',
 };
