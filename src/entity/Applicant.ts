@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-import {Category} from "./Category.enum";
-import {Level} from "./Level.enum";
+import { Category } from './Category.enum';
+import { Level } from './Level.enum';
 
 @Entity()
 export class Applicant {

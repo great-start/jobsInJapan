@@ -1,6 +1,6 @@
 
 ## Description
-
+NodeJs_Server_jobs_In_Japan
 
 
 ## Installation
@@ -12,20 +12,15 @@ $ npm install
 ## Init database tables
 
 ```bash
-# prisma init database tables
-$ npm run prisma:init
+# Set PostgreSQL settings (data-source.ts) 
+# Init database tables
+$ npm run migration:run
 ```
 
 ## Running the app
 
 ```bash
-# development
 $ npm run start
 
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
 ```
 

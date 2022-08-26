@@ -1,7 +1,7 @@
 import { NextFunction, Router, Response, Request } from 'express';
 
 import { applicantsRouter } from './applicants.router';
-import { positionsRouter } from './positions.controller';
+import { positionsRouter } from './positions.router';
 import { ErrorHandler } from '../error';
 import { HttpStatus } from '../constants';
 
