@@ -5,67 +5,42 @@ import { Applicant, Category, Level, Position } from '../entity';
 import { ErrorHandler } from '../error';
 import { AppDataSource } from '../data-source';
 import { HttpStatus } from '../constants';
-
-// import { emailService } from '../services/email.service';
+import { emailService } from '../services/email.service';
 
 class PositionsController {
-    public async createOne(req: Request, res: Response, next: NextFunction): Promise<void> {
+    public createOne = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
             const { category, level, japaneseRequired } = req.body as Position;
 
-            if (
-                (category && !Object.values(Category).includes(category as Category)) ||
-                (level && !Object.values(Level).includes(level as Level))
-            ) {
-                next(
-                    new ErrorHandler(
-                        'Input value for category or level is wrong',
-                        400,
-                        HttpStatus.BAD_REQUEST
-                    )
-                );
-                return;
-            }
+            await this.checkCategoryOrLevelExist(category, level);
 
             const { id } = await AppDataSource.getRepository(Position).save(req.body);
 
-            const applicants = await AppDataSource.getRepository(Applicant).find({
-                where: {
-                    categories: ArrayContains([category]),
-                    level,
-                    japaneseKnowledge: Raw(
-                        `CASE WHEN "Applicant"."japaneseKnowledge" = true THEN true WHEN "Applicant"."japaneseKnowledge" = false THEN ${japaneseRequired} END`
-                    ),
-                },
+            // find applicants to send emails
+            const applicants = await AppDataSource.getRepository(Applicant).findBy({
+                categories: ArrayContains([category]),
+                level,
+                japaneseKnowledge: Raw(
+                    `CASE WHEN "Applicant"."japaneseKnowledge" = true THEN true 
+                        WHEN "Applicant"."japaneseKnowledge" = false THEN ${japaneseRequired} 
+                        END`
+                ),
             });
 
-            console.log(applicants);
-
-            // !!applicants.length ? await emailService.sendEmail(applicants) : null;
+            // sending emails if applicants exist
+            !!applicants.length ? await emailService.sendEmail(applicants, req.body) : null;
 
             res.status(201).json({ id });
         } catch (e) {
             next(new ErrorHandler());
         }
-    }
+    };
 
-    public async findAllOrByQuery(req: Request, res: Response, next: NextFunction): Promise<void> {
+    public findAllOrByQuery = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
             const { category, level, tag } = req.query;
 
-            if (
-                (category && !Object.values(Category).includes(category as Category)) ||
-                (level && !Object.values(Level).includes(level as Level))
-            ) {
-                next(
-                    new ErrorHandler(
-                        'Input value for category or level is wrong',
-                        400,
-                        HttpStatus.BAD_REQUEST
-                    )
-                );
-                return;
-            }
+            await this.checkCategoryOrLevelExist(category as string, level as string);
 
             const positions = await AppDataSource.getRepository(Position).findBy({
                 category: (category as Category) || undefined,
@@ -79,28 +54,43 @@ class PositionsController {
         }
     }
 
-    public async findOneById(req: Request, res: Response, next: NextFunction): Promise<void> {
+    public findOneById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
             const { id } = req.params;
 
-            const position = await AppDataSource.getRepository(Position).findOneBy({
-                id: Number(id),
-            });
+            const actualPosition = await this.checkPositionExist(id);
 
-            if (!position) {
-                next(
-                    new ErrorHandler(
-                        `Position with id - ${id} does not exist`,
-                        400,
-                        HttpStatus.BAD_REQUEST
-                    )
-                );
-                return;
-            }
-
-            res.status(200).json(position);
+            res.status(200).json(actualPosition);
         } catch (e) {
-            next(new ErrorHandler());
+            next(e);
+        }
+    };
+
+    public async checkPositionExist(id: string): Promise<Position> {
+        const actualPosition = await AppDataSource.getRepository(Position).findOneBy({
+            id: Number(id),
+        });
+
+        if (!actualPosition) {
+            throw new ErrorHandler(
+                `Position with id - ${id} does not exist`,
+                400,
+                HttpStatus.BAD_REQUEST
+            );
+        }
+        return actualPosition;
+    }
+
+    public async checkCategoryOrLevelExist(category: string, level: string): Promise<void> {
+        if (
+            (category && !Object.values(Category).includes(category as Category)) ||
+            (level && !Object.values(Level).includes(level as Level))
+        ) {
+            throw new ErrorHandler(
+                'Input value for category or level is wrong',
+                400,
+                HttpStatus.BAD_REQUEST
+            );
         }
     }
 
@@ -117,30 +107,34 @@ class PositionsController {
         }
     }
 
-    public async deleteOne(req: Request, res: Response, next: NextFunction): Promise<void> {
+    public deleteOne = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
             const { id } = req.params;
 
-            await AppDataSource.getRepository(Position)
-                .findOneOrFail({ where: { id: Number(id) } })
-                .catch(() => {
-                    next(
-                        new ErrorHandler(
-                            HttpStatus.BAD_REQUEST,
-                            400,
-                            `Position with id ${id} does not exist`
-                        )
-                    );
-                    return;
-                });
+            const actualPosition = await this.checkPositionExist(id);
 
             await AppDataSource.getRepository(Position).delete({ id: Number(id) });
+
+            const { category, level, japaneseRequired } = actualPosition;
+
+            const applicants = await AppDataSource.getRepository(Applicant).findBy({
+                categories: ArrayContains([category]),
+                level,
+                japaneseKnowledge: Raw(
+                    `CASE WHEN "Applicant"."japaneseKnowledge" = true THEN true
+                        WHEN "Applicant"."japaneseKnowledge" = false THEN ${japaneseRequired}
+                        END`
+                ),
+            });
+
+            // send emails if applicants exist
+            !!applicants.length ? await emailService.sendEmail(applicants, actualPosition) : null;
 
             res.status(204).json();
         } catch (e) {
             next(new ErrorHandler());
         }
-    }
+    };
 }
 
 export const positionsController = new PositionsController();

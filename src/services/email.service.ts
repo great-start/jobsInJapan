@@ -1,6 +1,6 @@
 import { createTransport } from 'nodemailer';
 
-import { Applicant } from "../entity";
+import { Applicant, Position } from "../entity";
 import { config } from "../config";
 
 const emailTransporter = createTransport({
@@ -13,7 +13,7 @@ const emailTransporter = createTransport({
 });
 
 class EmailService {
-  async sendEmail(applicants: Applicant[]) {
+  async sendEmail(applicants: Applicant[], position: Position) {
     // const { subject, html } = emailInfo[action];
 
     let userEmails = [] as string[];
