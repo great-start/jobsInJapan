@@ -13,7 +13,7 @@ const emailTransporter = createTransport({
 });
 
 class EmailService {
-  async sendEmail(applicants: Applicant[], position: Position) {
+  async sendEmail(action: string, applicants: Applicant[], position: Position) {
     // const { subject, html } = emailInfo[action];
 
     let userEmails = [] as string[];
