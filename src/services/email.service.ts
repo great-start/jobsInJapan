@@ -6,10 +6,8 @@ import { config } from "../config";
 const emailTransporter = createTransport({
   service: 'Gmail',
   auth: {
-    // type: 'custom',
-    // clientId: '810053192176-d0chn9j3l1qplkoniu7tsbr1r4idqqra.apps.googleusercontent.com',
-    // clientSecret: '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',
     user: config.NO_REPLY_EMAIL,
+    // not an email pass. But generated App Password using Google personal account settings
     pass: config.GOOGLE_GENERATED_APP_PASSWORD
   },
 });

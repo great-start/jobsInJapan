@@ -1,11 +1,12 @@
 import { NextFunction, Request, Response } from 'express';
-import { ArrayContains, Like } from "typeorm";
+import { ArrayContains, Like, Raw } from 'typeorm';
 
-import { Applicant, Category, Level, Position } from "../entity";
+import { Applicant, Category, Level, Position } from '../entity';
 import { ErrorHandler } from '../error';
 import { AppDataSource } from '../data-source';
 import { HttpStatus } from '../constants';
-import { emailService } from "../services/email.service";
+
+// import { emailService } from '../services/email.service';
 
 class PositionsController {
     public async createOne(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -28,13 +29,19 @@ class PositionsController {
 
             const { id } = await AppDataSource.getRepository(Position).save(req.body);
 
-            const applicants = await AppDataSource.getRepository(Applicant).findBy({
-                categories: ArrayContains([category]),
-                level,
-                japaneseKnowledge: japaneseRequired
+            const applicants = await AppDataSource.getRepository(Applicant).find({
+                where: {
+                    categories: ArrayContains([category]),
+                    level,
+                    japaneseKnowledge: Raw(
+                        `CASE WHEN "Applicant"."japaneseKnowledge" = true THEN true WHEN "Applicant"."japaneseKnowledge" = false THEN ${japaneseRequired} END`
+                    ),
+                },
             });
 
-            await emailService.sendEmail(applicants).catch((err) => console.log(err));
+            console.log(applicants);
+
+            // !!applicants.length ? await emailService.sendEmail(applicants) : null;
 
             res.status(201).json({ id });
         } catch (e) {
