@@ -32,7 +32,7 @@ class PositionsController {
 
             res.status(201).json({ id });
         } catch (e) {
-            next(new ErrorHandler());
+            next(e);
         }
     };
 
@@ -50,7 +50,7 @@ class PositionsController {
 
             res.status(200).json(positions);
         } catch (e) {
-            next(new ErrorHandler());
+            next(e);
         }
     }
 
@@ -81,7 +81,7 @@ class PositionsController {
         return actualPosition;
     }
 
-    public async checkCategoryOrLevelExist(category: string, level: string): Promise<void> {
+    public checkCategoryOrLevelExist = async (category: string, level: string): Promise<void> => {
         if (
             (category && !Object.values(Category).includes(category as Category)) ||
             (level && !Object.values(Level).includes(level as Level))
@@ -94,16 +94,18 @@ class PositionsController {
         }
     }
 
-    public async updateOne(req: Request, res: Response, next: NextFunction): Promise<void> {
+    public updateOne = async (req: Request, res: Response, next: NextFunction): Promise<void> =>  {
         try {
             const { id } = req.params;
             const body = req.body;
+
+            await this.checkPositionExist(id);
 
             await AppDataSource.getRepository(Position).update({ id: Number(id) }, body);
 
             res.status(200).json();
         } catch (e) {
-            next(new ErrorHandler());
+            next(e);
         }
     }
 
@@ -132,7 +134,7 @@ class PositionsController {
 
             res.status(204).json();
         } catch (e) {
-            next(new ErrorHandler());
+            next(e);
         }
     };
 }
