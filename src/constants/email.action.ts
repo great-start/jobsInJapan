@@ -1,11 +1,10 @@
-export const EmailTemplates = {
-  NEW_POSITION: {
+export const EmailAction = {
+  ADD_POSITION: {
     subject: 'New job position matching your application',
-    htmlTemplate: EmailTemlates
+    header: 'This position added'
   },
   REMOVE_POSITION: {
-  html_template: EmailTemlates,
     subject: 'Job position matching your application has removed',
-    htmlTemplate: EmailTemlates,
+    header: 'This position removed'
 }
 }

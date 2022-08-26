@@ -4,7 +4,7 @@ import { ArrayContains, Like, Raw } from 'typeorm';
 import { Applicant, Category, Level, Position } from '../entity';
 import { ErrorHandler } from '../error';
 import { AppDataSource } from '../data-source';
-import { HttpStatus } from '../constants';
+import { EmailAction, HttpStatus } from '../constants';
 import { emailService } from '../services/email.service';
 
 class PositionsController {
@@ -28,7 +28,9 @@ class PositionsController {
             });
 
             // sending emails if applicants exist
-            !!applicants.length ? await emailService.sendEmail(applicants, req.body) : null;
+            !!applicants.length
+                ? await emailService.sendEmail(EmailAction.ADD_POSITION, applicants, req.body)
+                : null;
 
             res.status(201).json({ id });
         } catch (e) {
@@ -36,7 +38,11 @@ class PositionsController {
         }
     };
 
-    public findAllOrByQuery = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    public findAllOrByQuery = async (
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ): Promise<void> => {
         try {
             const { category, level, tag } = req.query;
 
@@ -53,7 +59,7 @@ class PositionsController {
             console.log(e);
             next(e);
         }
-    }
+    };
 
     public findOneById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
@@ -82,7 +88,7 @@ class PositionsController {
         return actualPosition;
     }
 
-    public async checkCategoryOrLevelExist (category: string, level: string): Promise<void> {
+    public async checkCategoryOrLevelExist(category: string, level: string): Promise<void> {
         if (
             (category && !Object.values(Category).includes(category as Category)) ||
             (level && !Object.values(Level).includes(level as Level))
@@ -95,7 +101,7 @@ class PositionsController {
         }
     }
 
-    public async updateOne (req: Request, res: Response, next: NextFunction): Promise<void> {
+    public async updateOne(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const { id } = req.params;
             const body = req.body;
@@ -120,6 +126,7 @@ class PositionsController {
 
             const { category, level, japaneseRequired } = actualPosition;
 
+            // find applicants to send emails
             const applicants = await AppDataSource.getRepository(Applicant).findBy({
                 categories: ArrayContains([category]),
                 level,
@@ -131,11 +138,17 @@ class PositionsController {
             });
 
             // send emails if applicants exist
-            !!applicants.length ? await emailService.sendEmail(applicants, actualPosition) : null;
+            !!applicants.length
+                ? await emailService.sendEmail(
+                      EmailAction.REMOVE_POSITION,
+                      applicants,
+                      actualPosition
+                  )
+                : null;
 
-            res.status(204).json();
+            res.status(204).end();
         } catch (e) {
-            next(e);
+            next(new ErrorHandler());
         }
     };
 }
