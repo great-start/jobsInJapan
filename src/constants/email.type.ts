@@ -1,4 +1,4 @@
-export const EmailAction = {
+export const EmailType = {
     ADD_POSITION: {
         subject: 'New job position matching your application',
         header: 'This position added',

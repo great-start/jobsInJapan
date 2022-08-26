@@ -3,5 +3,4 @@ export const HttpStatus = {
     OK: 'OK',
     CREATED: 'Created',
     SERVER_ERROR: 'Internal Server Error',
-    NOT_FOUND_PAGE: 'Not Found',
 };

@@ -4,7 +4,7 @@ import { ArrayContains, Like, Raw } from 'typeorm';
 import { Applicant, Category, Level, Position } from '../entity';
 import { ErrorHandler } from '../error';
 import { AppDataSource } from '../data-source';
-import { EmailAction, HttpStatus } from '../constants';
+import { EmailType, HttpStatus } from '../constants';
 import { emailService } from '../services/email.service';
 
 class PositionsController {
@@ -29,7 +29,7 @@ class PositionsController {
 
             // sending emails if applicants exist
             !!applicants.length
-                ? await emailService.sendEmail(EmailAction.ADD_POSITION, applicants, req.body)
+                ? await emailService.sendEmail(EmailType.ADD_POSITION, applicants, req.body)
                 : null;
 
             res.status(201).json({ id });
@@ -56,7 +56,6 @@ class PositionsController {
 
             res.status(200).json(positions);
         } catch (e) {
-            console.log(e);
             next(e);
         }
     };
@@ -101,20 +100,22 @@ class PositionsController {
         }
     }
 
-    public async updateOne(req: Request, res: Response, next: NextFunction): Promise<void> {
+    public updateOne = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
             const { id } = req.params;
-            const body = req.body;
+            const { category, level } = req.body as Position;
 
             await this.checkPositionExist(id);
 
-            await AppDataSource.getRepository(Position).update({ id: Number(id) }, body);
+            await this.checkCategoryOrLevelExist(category, level);
 
-            res.status(200).json();
+            await AppDataSource.getRepository(Position).update({ id: Number(id) }, req.body);
+
+            res.status(200).end();
         } catch (e) {
             next(e);
         }
-    }
+    };
 
     public deleteOne = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
@@ -140,7 +141,7 @@ class PositionsController {
             // send emails if applicants exist
             !!applicants.length
                 ? await emailService.sendEmail(
-                      EmailAction.REMOVE_POSITION,
+                      EmailType.REMOVE_POSITION,
                       applicants,
                       actualPosition
                   )

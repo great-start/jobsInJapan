@@ -15,8 +15,8 @@ const emailTransporter = createTransport({
 });
 
 class EmailService {
-    async sendEmail(emailAction: { subject: string, header: string }, applicants: Applicant[], position: Position) {
-        const { subject, header } = emailAction;
+    async sendEmail(emailType: { subject: string, header: string }, applicants: Applicant[], position: Position) {
+        const { subject, header } = emailType;
         const { category, level, company, japaneseRequired, description } = position;
 
         let userEmails = [] as string[];
