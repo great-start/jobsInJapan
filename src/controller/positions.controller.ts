@@ -50,6 +50,7 @@ class PositionsController {
 
             res.status(200).json(positions);
         } catch (e) {
+            console.log(e);
             next(e);
         }
     }
@@ -81,7 +82,7 @@ class PositionsController {
         return actualPosition;
     }
 
-    public checkCategoryOrLevelExist = async (category: string, level: string): Promise<void> => {
+    public async checkCategoryOrLevelExist (category: string, level: string): Promise<void> {
         if (
             (category && !Object.values(Category).includes(category as Category)) ||
             (level && !Object.values(Level).includes(level as Level))
@@ -94,7 +95,7 @@ class PositionsController {
         }
     }
 
-    public updateOne = async (req: Request, res: Response, next: NextFunction): Promise<void> =>  {
+    public async updateOne (req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const { id } = req.params;
             const body = req.body;

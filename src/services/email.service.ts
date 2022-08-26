@@ -23,6 +23,7 @@ class EmailService {
     })
 
     await emailTransporter.sendMail({
+
       from: 'From NodeService job_in_Japan',
       sender: 'From NodeService job_in_Japan',
       to: userEmails,
