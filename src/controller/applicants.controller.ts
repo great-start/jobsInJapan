@@ -6,30 +6,37 @@ import { ErrorHandler } from '../error';
 import { HttpStatus } from '../constants';
 
 class ApplicantsController {
-    public async createOne(req: Request, res: Response, next: NextFunction): Promise<void> {
+    public createOne = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
-            const applicant = req.body;
+            const { email } = req.body as Applicant;
 
-            const { id } = await AppDataSource.getRepository(Applicant).save(applicant);
+            await this.checkApplicantExist(email);
+
+            const { id } = await AppDataSource.getRepository(Applicant).save({
+                ...req.body,
+                email: email.toLowerCase(),
+            });
 
             res.status(201).json({ id });
         } catch (e) {
-            next(new ErrorHandler());
+            next(e);
         }
-    }
+    };
 
-    public async updateOne(req: Request, res: Response, next: NextFunction): Promise<void> {
+    public updateOne = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
             const { id } = req.params;
-            const applicant = req.body;
+            const { email } = req.body as Applicant;
 
-            await AppDataSource.getRepository(Applicant).update(id, applicant);
+            await this.checkApplicantExist(email);
 
-            res.status(200).json();
+            await AppDataSource.getRepository(Applicant).update(id, req.body);
+
+            res.status(200).end();
         } catch (e) {
-            next(new ErrorHandler());
+            next(e);
         }
-    }
+    };
 
     public async deleteOne(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
@@ -52,8 +59,24 @@ class ApplicantsController {
 
             res.status(204).json();
         } catch (e) {
-            next(new ErrorHandler());
+            next(e);
         }
+    }
+
+    public async checkApplicantExist(email: string): Promise<Applicant | null> {
+        const existedApplicant = await AppDataSource.getRepository(Applicant).findOneBy({
+            email: email.toLowerCase(),
+        });
+
+        if (existedApplicant) {
+            throw new ErrorHandler(
+                HttpStatus.BAD_REQUEST,
+                400,
+                `An applicant with this email ${email} already exists`
+            );
+        }
+
+        return existedApplicant;
     }
 }
 
