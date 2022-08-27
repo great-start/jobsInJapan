@@ -29,7 +29,7 @@ class PositionsController {
 
             // sending emails if applicants exist
             !!applicants.length
-                ? await emailService.sendEmail(EmailType.ADD_POSITION, applicants, req.body)
+                ? await emailService.sendEmails(EmailType.ADD_POSITION, applicants, req.body)
                 : null;
 
             res.status(201).json({ id });
@@ -140,7 +140,7 @@ class PositionsController {
 
             // send emails if applicants exist
             !!applicants.length
-                ? await emailService.sendEmail(
+                ? await emailService.sendEmails(
                       EmailType.REMOVE_POSITION,
                       applicants,
                       actualPosition

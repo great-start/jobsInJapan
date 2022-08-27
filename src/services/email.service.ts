@@ -9,13 +9,13 @@ const emailTransporter = createTransport({
     service: 'Gmail',
     auth: {
         user: config.NO_REPLY_EMAIL,
-        // not an email pass. But generated App Password using Google personal account settings
+        // not an email password. But generated App Password using Google personal account settings
         pass: config.GOOGLE_GENERATED_APP_PASSWORD,
     },
 });
 
 class EmailService {
-    async sendEmail(
+    async sendEmails(
         emailType: { subject: string; header: string },
         applicants: Applicant[],
         position: Position
