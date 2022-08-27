@@ -1,0 +1,227 @@
+{
+	"info": {
+		"_postman_id": "7c129ef6-78f7-4afe-9d1b-e016e74119cb",
+		"name": "test_task_jobInJapan",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "22457647"
+	},
+	"item": [
+		{
+			"name": "/ positions",
+			"item": [
+				{
+					"name": "/",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"category\": \"nodejs\",\n    \"level\": \"senior\",\n    \"company\": \"Rakutens\",\n    \"description\": \"We are looking for people who are flexible and highly skilled, with an interest in languages and other cultures. We are open to overseas candidates looking to relocate to Japan.\",\n    \"japaneseRequired\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/positions",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"positions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/positions?category=react&level=junior&tag=flexible",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"positions"
+							],
+							"query": [
+								{
+									"key": "category",
+									"value": "react"
+								},
+								{
+									"key": "level",
+									"value": "junior"
+								},
+								{
+									"key": "tag",
+									"value": "flexible"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/ { id }",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/positions/5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"positions",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/ { id }",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"level\": \"senior\",\n    \"description\": \"We are looking for people who are flexible and highly skilled, with an interest in languages and other cultures. We are open to overseas candidates looking to relocate to Japan.\",\n    \"japaneseRequired\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/positions/25",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"positions",
+								"25"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/ { id }",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/positions/5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"positions",
+								"5"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "/ applicants",
+			"item": [
+				{
+					"name": "/",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"zhenya_bill23dd4223@ukr.net\",\n    \"categories\": [\"nodejs\", \"react\", \"javascript\"],\n    \"level\": \"middle\",\n    \"japaneseKnowledge\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/applicants",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"applicants"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/ { id }",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"categories\": [\"react\"],\n    \"level\": \"junior\",\n    \"email\": \"you.mail1342342342343@mail.run\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/applicants/5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"applicants",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/ { id }",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/applicants/30",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"applicants",
+								"30"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
