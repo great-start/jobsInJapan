@@ -43,7 +43,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/positions?category=react&level=junior&tag=flexible",
+							"raw": "http://localhost:5000/positions?category=nodejs&level=senior&tag=flexible and highly skilled",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -55,15 +55,15 @@
 							"query": [
 								{
 									"key": "category",
-									"value": "react"
+									"value": "nodejs"
 								},
 								{
 									"key": "level",
-									"value": "junior"
+									"value": "senior"
 								},
 								{
 									"key": "tag",
-									"value": "flexible"
+									"value": "flexible and highly skilled"
 								}
 							]
 						}
@@ -76,7 +76,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/positions/2",
+							"raw": "http://localhost:5000/positions/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -84,7 +84,7 @@
 							"port": "5000",
 							"path": [
 								"positions",
-								"2"
+								"1"
 							]
 						}
 					},
@@ -97,7 +97,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"level\": \"senior\",\n    \"description\": \"We are looking for people who are flexible and highly skilled, with an interest in languages and other cultures. We are open to overseas candidates looking to relocate to Japan.\",\n    \"japaneseRequired\": true\n}",
+							"raw": "{\n    \"level\": \"middle\",\n    \"description\": \"We are looking for Miidle level developers\",\n    \"japaneseRequired\": true\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -105,7 +105,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/positions/2",
+							"raw": "http://localhost:5000/positions/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -113,7 +113,7 @@
 							"port": "5000",
 							"path": [
 								"positions",
-								"2"
+								"1"
 							]
 						}
 					},
@@ -125,7 +125,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/positions/3",
+							"raw": "http://localhost:5000/positions/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -133,7 +133,7 @@
 							"port": "5000",
 							"path": [
 								"positions",
-								"3"
+								"1"
 							]
 						}
 					},
@@ -151,7 +151,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"email@gmail.com\",\n    \"categories\": [\"nodejs\", \"react\", \"javascript\"],\n    \"level\": \"middle\",\n    \"japaneseKnowledge\": false\n}",
+							"raw": "{\n    \"email\": \"email@gmail.com\",\n    \"categories\": [\"nodejs\", \"javascript\"],\n    \"level\": \"middle\",\n    \"japaneseKnowledge\": false\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -179,7 +179,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"categories\": [\"react\"],\n    \"level\": \"junior\",\n    \"email\": \"another.email@gmail.com\"\n}",
+							"raw": "{\n    \"categories\": [\"react\", \"nodejs\", \"javascript\"],\n    \"level\": \"senior\",\n    \"email\": \"another.email@gmail.com\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -187,7 +187,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/applicants/5",
+							"raw": "http://localhost:5000/applicants/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -195,7 +195,7 @@
 							"port": "5000",
 							"path": [
 								"applicants",
-								"5"
+								"1"
 							]
 						}
 					},
@@ -207,7 +207,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/applicants/3",
+							"raw": "http://localhost:5000/applicants/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -215,7 +215,7 @@
 							"port": "5000",
 							"path": [
 								"applicants",
-								"3"
+								"1"
 							]
 						}
 					},
