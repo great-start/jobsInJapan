@@ -7,9 +7,10 @@ NodeJs_Server_jobs_In_Japan
 $ npm install
 ```
 
-## Init database tables
+## Init database tables, NodeMailer configuration
 ```bash
 # Set DataBase configuration (data-source.ts, .env) 
+# Set NodeMailer configuration (.env) 
 
 # Init database tables
 $ npm run migration:run
