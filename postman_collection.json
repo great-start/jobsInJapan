@@ -76,7 +76,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/positions/5",
+							"raw": "http://localhost:5000/positions/2",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -84,7 +84,7 @@
 							"port": "5000",
 							"path": [
 								"positions",
-								"5"
+								"2"
 							]
 						}
 					},
@@ -105,7 +105,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/positions/25",
+							"raw": "http://localhost:5000/positions/2",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -113,7 +113,7 @@
 							"port": "5000",
 							"path": [
 								"positions",
-								"25"
+								"2"
 							]
 						}
 					},
@@ -125,7 +125,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/positions/5",
+							"raw": "http://localhost:5000/positions/3",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -133,7 +133,7 @@
 							"port": "5000",
 							"path": [
 								"positions",
-								"5"
+								"3"
 							]
 						}
 					},
@@ -151,7 +151,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"zhenya_bill23dd4223@ukr.net\",\n    \"categories\": [\"nodejs\", \"react\", \"javascript\"],\n    \"level\": \"middle\",\n    \"japaneseKnowledge\": false\n}",
+							"raw": "{\n    \"email\": \"email@gmail.com\",\n    \"categories\": [\"nodejs\", \"react\", \"javascript\"],\n    \"level\": \"middle\",\n    \"japaneseKnowledge\": false\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -179,7 +179,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"categories\": [\"react\"],\n    \"level\": \"junior\",\n    \"email\": \"you.mail1342342342343@mail.run\"\n}",
+							"raw": "{\n    \"categories\": [\"react\"],\n    \"level\": \"junior\",\n    \"email\": \"another.email@gmail.com\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -207,7 +207,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/applicants/30",
+							"raw": "http://localhost:5000/applicants/3",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -215,7 +215,7 @@
 							"port": "5000",
 							"path": [
 								"applicants",
-								"30"
+								"3"
 							]
 						}
 					},
