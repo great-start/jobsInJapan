@@ -6,11 +6,24 @@ import { ErrorHandler } from '../error';
 import { HttpStatus } from '../constants';
 
 class ApplicantsController {
-    public createOne = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    public async createOne(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const { email } = req.body as Applicant;
 
-            await this.checkApplicantExist(email);
+            const existedApplicant = await AppDataSource.getRepository(Applicant).findOneBy({
+                email: email.toLowerCase(),
+            });
+
+            if (existedApplicant) {
+                next(
+                    new ErrorHandler(
+                        `An applicant with this email ${email} already exists`,
+                        400,
+                        HttpStatus.BAD_REQUEST
+                    )
+                );
+                return;
+            }
 
             const { id } = await AppDataSource.getRepository(Applicant).save({
                 ...req.body,
@@ -21,16 +34,19 @@ class ApplicantsController {
         } catch (e) {
             next(e);
         }
-    };
+    }
 
     public updateOne = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
             const { id } = req.params;
             const { email } = req.body as Applicant;
 
-            await this.checkApplicantExist(email);
+            await this.checkApplicantExist(id);
 
-            await AppDataSource.getRepository(Applicant).update(id, req.body);
+            await AppDataSource.getRepository(Applicant).update(id, {
+                ...req.body,
+                email: email.toLowerCase(),
+            });
 
             res.status(200).end();
         } catch (e) {
@@ -38,22 +54,11 @@ class ApplicantsController {
         }
     };
 
-    public async deleteOne(req: Request, res: Response, next: NextFunction): Promise<void> {
+    public deleteOne = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
             const { id } = req.params;
 
-            await AppDataSource.getRepository(Applicant)
-                .findOneOrFail({ where: { id: Number(id) } })
-                .catch(() => {
-                    next(
-                        new ErrorHandler(
-                            HttpStatus.BAD_REQUEST,
-                            400,
-                            `Applicant with id ${id} does not exist`
-                        )
-                    );
-                    return;
-                });
+            await this.checkApplicantExist(id);
 
             await AppDataSource.getRepository(Applicant).delete({ id: Number(id) });
 
@@ -61,22 +66,18 @@ class ApplicantsController {
         } catch (e) {
             next(e);
         }
-    }
+    };
 
-    public async checkApplicantExist(email: string): Promise<Applicant | null> {
-        const existedApplicant = await AppDataSource.getRepository(Applicant).findOneBy({
-            email: email.toLowerCase(),
-        });
-
-        if (existedApplicant) {
-            throw new ErrorHandler(
-                HttpStatus.BAD_REQUEST,
-                400,
-                `An applicant with this email ${email} already exists`
-            );
-        }
-
-        return existedApplicant;
+    public async checkApplicantExist(id: string): Promise<void> {
+        await AppDataSource.getRepository(Applicant)
+            .findOneOrFail({ where: { id: Number(id) } })
+            .catch(() => {
+                throw new ErrorHandler(
+                    `Applicant with id ${id} does not exist`,
+                    400,
+                    HttpStatus.BAD_REQUEST
+                );
+            });
     }
 }
 
