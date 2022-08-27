@@ -97,7 +97,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"level\": \"middle\",\n    \"description\": \"We are looking for Miidle level developers\",\n    \"japaneseRequired\": true\n}",
+							"raw": "{\n    \"level\": \"middle\",\n    \"japaneseRequired\": true,\n    \"description\": \"We are looking for Miidle level developers\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -151,7 +151,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"email@gmail.com\",\n    \"categories\": [\"nodejs\", \"javascript\"],\n    \"level\": \"middle\",\n    \"japaneseKnowledge\": false\n}",
+							"raw": "{\n    \"email\": \"email@gmail.com\",\n    \"categories\": [\"nodejs\", \"javascript\"],\n    \"japaneseKnowledge\": false,\n    \"level\": \"middle\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -179,7 +179,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"categories\": [\"react\", \"nodejs\", \"javascript\"],\n    \"level\": \"senior\",\n    \"email\": \"another.email@gmail.com\"\n}",
+							"raw": "{\n    \"email\": \"another.email@gmail.com\",\n    \"categories\": [\"react\", \"nodejs\", \"javascript\"],\n    \"japaneseKnowledge\": true,\n    \"level\": \"senior\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
