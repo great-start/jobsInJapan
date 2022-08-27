@@ -9,7 +9,8 @@ $ npm install
 
 ## Init database tables
 ```bash
-# Set PostgreSQL configuration (data-source.ts, .env) 
+# Set DataBase configuration (data-source.ts, .env) 
+
 # Init database tables
 $ npm run migration:run
 ```
@@ -19,7 +20,7 @@ $ npm run migration:run
 $ npm run start
 ```
 
-## Postman Collection
+##### Postman Collection
 ```
-# postman.collection.json
+postman_collection.json
 ```
