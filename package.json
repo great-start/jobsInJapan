@@ -5,10 +5,10 @@
   "main": "src/app.ts",
   "scripts": {
     "start:dev": "rimraf dist && tsc-watch --onSuccess 'npm run watch:server'",
-    "start": "rimraf dist && tsc-watch --onSuccess 'npm run watch:server' && node dist/app.js",
+    "start": "node dist/app.js",
     "watch:server": "nodemon --watch src src/app.ts",
     "typeorm": "typeorm-ts-node-commonjs -d src/data-source.ts",
-    "migration:run": "npm run typeorm migration:run",
+    "migration:run": "tsc-watch --onSuccess && npm run typeorm migration:run",
     "migration:generate": "npm run typeorm migration:generate ./src/migrations/$npm_config_name",
     "migration:create": "npm run typeorm migration:create src/migrations/$npm_config_name",
     "migration:revert": "npm run typeorm -d src/config/typeorm.config-migration.ts migration:revert"
