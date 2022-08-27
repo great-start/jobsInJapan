@@ -20,6 +20,6 @@ $ npm run start
 ```
 
 ## Postman Collection
-```bash
+```
 # postman.collection.json
 ```
