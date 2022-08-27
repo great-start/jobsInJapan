@@ -9,7 +9,7 @@ $ npm install
 
 ## Init database tables
 ```bash
-# Set PostgreSQL settings (data-source.ts) 
+# Set PostgreSQL configuration (data-source.ts, .env) 
 # Init database tables
 $ npm run migration:run
 ```
