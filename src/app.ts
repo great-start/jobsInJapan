@@ -11,7 +11,6 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/', apiRouter);
 
-
 const { PROTOCOL, HOST, PORT } = config;
 
 app.listen(PORT, async () => {
